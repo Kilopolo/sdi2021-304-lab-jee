@@ -16,13 +16,15 @@
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
+<div><a href="index.jsp">Volver</a></div>
 	<!-- Contenido -->
 	<div class="container" id="contenedor-principal">
 		<h2>Vista-Carrito</h2>
 		<ul>
 			<c:forEach var="par" items="${paresCarrito}">
 				<tr>
-					<li>${par.key}- ${par.value}</li>
+					<li>${par.key}-${par.value}</li>
+
 				</tr>
 			</c:forEach>
 		</ul>

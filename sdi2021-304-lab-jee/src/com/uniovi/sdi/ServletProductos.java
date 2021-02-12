@@ -1,0 +1,60 @@
+package com.uniovi.sdi;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class ServletProductos
+ */
+@WebServlet("/ServletProductos")
+public class ServletProductos extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ServletProductos() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession	session=request.getSession();
+		ArrayList<Producto>productos=(ArrayList<Producto>) request.getSession().getAttribute("productosTienda");
+		if (productos == null) {
+			productos = new ArrayList<Producto>();
+			request.getSession().setAttribute("productosTienda", productos);
+			ProductosService ps = new ProductosService();
+			List<Producto> listaProductos = ps.getProductos();
+			productos.add(new Producto("aaa", "aa", 0));
+			for (Producto producto : listaProductos) {
+				productos.add(producto);
+			}
+		}
+		
+		request.setAttribute("productosTienda", productos);
+		
+		getServletContext().getRequestDispatcher("/vista-productos.jsp").forward(request,	
+		response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request, response);
+	}
+
+}
