@@ -32,19 +32,10 @@ public class ServletProductos extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession	session=request.getSession();
-		ArrayList<Producto>productos=(ArrayList<Producto>) request.getSession().getAttribute("productosTienda");
-		if (productos == null) {
-			productos = new ArrayList<Producto>();
-			request.getSession().setAttribute("productosTienda", productos);
-			ProductosService ps = new ProductosService();
-			List<Producto> listaProductos = ps.getProductos();
-			productos.add(new Producto("aaa", "aa", 0));
-			for (Producto producto : listaProductos) {
-				productos.add(producto);
-			}
-		}
-		
-		request.setAttribute("productosTienda", productos);
+
+		ProductosService ps = new ProductosService();
+		List<Producto> listaProductos = ps.getProductos();
+		session.setAttribute("productosTienda", listaProductos);
 		
 		getServletContext().getRequestDispatcher("/vista-productos.jsp").forward(request,	
 		response);

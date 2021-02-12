@@ -22,10 +22,9 @@
 	<div class="container" id="contenedor-principal">
 		<h2>Productos</h2>
 		<div class="row	">
-			<jsp:useBean id="productosService"
-				class="com.uniovi.sdi.ProductosService" />
+			
 			<c:forEach var="producto" begin="0"
-				items="${productosService.productos}">
+				items="${productosTienda}">
 
 				<div class="col-xs-12	col-sm-6	col-md-4	col-lg-3">
 					<div class="col-xs-12	col-sm-6	col-md-4	col-lg-3">

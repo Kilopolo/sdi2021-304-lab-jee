@@ -34,6 +34,10 @@
 
 	<!-- Contenido	-->
 	<div class="container" id="contenedor-principal">
+	<!-- Volver -->
+	<div>
+		<a href="index.jsp">Volver</a>
+	</div>
 
 		<h2>Agregar producto a la tienda</h2>
 		<form class="form-horizontal" method="post" action="admin.jsp">
