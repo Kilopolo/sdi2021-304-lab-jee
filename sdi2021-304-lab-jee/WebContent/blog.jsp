@@ -49,7 +49,7 @@
 
 	<!-- Form para el post -->
 	<h3>Agregar Comentario</h3>
-	<form class="form-horizontal" method="post" action="/ServletBlog">
+	<form class="form-horizontal" method="post" action="ServletBlog">
 		<div class="form-group">
 			<label class="control-label	col-sm-2" for="nombre">Nombre:</label>
 			<div class="col-sm-10">
@@ -75,7 +75,13 @@
 		</div>
 	</form>
 	
+	
+	
 	<!-- Entradas del blog -->
+	
+		<jsp:useBean id="post" class="com.uniovi.sdi.Post" />
+	<jsp:setProperty name="post" property="*" />
+	
 	<h3>Comentarios</h3>
 	<div class="row">
 

@@ -28,7 +28,7 @@
 			<li><a href="login.jsp">Login</a></li>
 			<li><a href="admin.jsp">Administrar productos</a></li>
 			<li><a href="ServletProductos">Productos</a></li>
-			<li><a href="blog.jsp">Blog</a></li>
+			<li><a href="ServletBlog">Blog</a></li>
 		</ul>
 		<div class="nav navbar-right">
 			<jsp:getProperty name="contador" property="total" />
