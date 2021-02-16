@@ -8,11 +8,6 @@ import com.db4o.ObjectContainer;
 
 public class BlogPostsService {
 	
-	public BlogPostsService() {
-		// TODO Auto-generated constructor stub
-		Db4oEmbedded.newConfiguration();
-	}
-	
 	public List<Post> getPosts() {
 		List<Post> posts = new LinkedList<Post>();
 		ObjectContainer db = null;
@@ -30,8 +25,9 @@ public class BlogPostsService {
 	public void setNuevoPost(Post nuevoPost) {
 		ObjectContainer db = null;
 		try {
-			db = Db4oEmbedded.openFile("bdPost");
+			db = Db4oEmbedded.openFile("bdPosts");
 			db.store(nuevoPost);
+			db.commit();
 		} finally {
 			db.close();
 

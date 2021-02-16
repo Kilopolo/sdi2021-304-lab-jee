@@ -36,10 +36,7 @@ public class ServletBlog extends HttpServlet {
 		HttpSession session = request.getSession();
 		List<Post> posts = new BlogPostsService().getPosts();
 		
-		System.out.println("Lista de posts:");
-		for (Post post : posts) {
-			System.out.println(post);
-		}
+
 		session.setAttribute("postsList", posts);
 		getServletContext().getRequestDispatcher("/blog.jsp").forward(request, response);
 	}
@@ -57,8 +54,9 @@ public class ServletBlog extends HttpServlet {
 		String text= request.getParameter("text");
 		
 		Post	post	=	new Post(name, title, text);
-		System.out.println("post a isertar en la bd: "+post);
+
 		BlogPostsService bp = new BlogPostsService();
+		bp.getPosts();
 		bp.setNuevoPost(post);
 		
 		
