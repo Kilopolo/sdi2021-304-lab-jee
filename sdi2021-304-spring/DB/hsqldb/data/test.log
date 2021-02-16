@@ -1,5 +1,0 @@
-/*C4*/SET SCHEMA PUBLIC
-drop table if exists mark CASCADE 
-drop sequence hibernate_sequence if exists
-create sequence hibernate_sequence start with 1 increment by 1
-create table mark (id bigint not null, description varchar(255), score double, primary key (id))
