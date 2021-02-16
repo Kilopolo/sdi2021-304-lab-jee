@@ -24,7 +24,6 @@ public class ServletBlog extends HttpServlet {
 	 */
 	public ServletBlog() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -36,20 +35,13 @@ public class ServletBlog extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		List<Post> posts = new BlogPostsService().getPosts();
-
-
 		
+		System.out.println("Lista de posts:");
+		for (Post post : posts) {
+			System.out.println(post);
+		}
 		session.setAttribute("postsList", posts);
 		getServletContext().getRequestDispatcher("/blog.jsp").forward(request, response);
-
-	}
-
-	private void insertarPostsList(List<Post> posts, Post post) {
-		
-		if (!posts.contains(post)) {
-			posts.add(post);
-		}
-		
 	}
 
 	/**
@@ -63,10 +55,13 @@ public class ServletBlog extends HttpServlet {
 		String name = request.getParameter("name");
 		String title = request.getParameter("title");
 		String text= request.getParameter("text");
+		
 		Post	post	=	new Post(name, title, text);
+		System.out.println("post a isertar en la bd: "+post);
 		BlogPostsService bp = new BlogPostsService();
 		bp.setNuevoPost(post);
-
+		
+		
 		doGet(request, response);
 
 	}

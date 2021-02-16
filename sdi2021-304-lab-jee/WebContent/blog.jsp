@@ -25,25 +25,20 @@
 
 
 	<!-- Codigo -->
-	<%-- 	<c:if test="${sessionScope.usuario	!=	'admin'}">
-		<c:redirect url="/login.jsp" />
+
+
+<%-- 	<jsp:useBean id="Post"
+		class="com.uniovi.sdi.Post" />
+
+	<jsp:setProperty name="Post" property="*" />
+
+	<c:if test="${post.name	!=	null}">
+		<jsp:useBean id="BlogPostsService"
+			class="com.uniovi.sdi.BlogPostsService" />
+		<jsp:setProperty name="BlogPostsService" property="nuevoPost"
+			value="${post}" />
+		<c:redirect url="/blog.jsp" />
 	</c:if> --%>
-	<%-- 	<jsp:useBean id="producto" class="com.uniovi.sdi.Producto" />
-	<jsp:setProperty name="producto" property="*" />
- --%>
-	<%-- 	<c:if test="${producto.nombre	!=	null}">
-		<jsp:useBean id="productosService"
-			class="com.uniovi.sdi.ProductosService" />
-		<jsp:setProperty name="productosService" property="nuevoProducto"
-			value="${producto}" />
-		<c:redirect url="/index.jsp" />
-	</c:if> --%>
-
-
-	<jsp:useBean id="BlogPostsService"
-		class="com.uniovi.sdi.BlogPostsService" />
-
-
 
 	<h2>Blog</h2>
 
@@ -74,37 +69,39 @@
 			</div>
 		</div>
 	</form>
-	
-	
-	
+
+
+
 	<!-- Entradas del blog -->
-	
-		<jsp:useBean id="post" class="com.uniovi.sdi.Post" />
-	<jsp:setProperty name="post" property="*" />
-	
+
 	<h3>Comentarios</h3>
 	<div class="row">
-
-		<c:forEach var="post" begin="0" items="${ServletBlog.posts}">
+	
+		<c:forEach var="post" begin="0" items="${postsList}">
 
 			<div class="col-xs-12	col-sm-6	col-md-4	col-lg-3">
 				<div class="col-xs-12	col-sm-6	col-md-4	col-lg-3">
+				
 					<div>
 						<p>
+							Nombre:<br>
 							<c:out value="${post.name}"></c:out>
 						</p>
 						<div>
 							<h4>
+								Titulo:<br>
 								<c:out value="${post.title}"></c:out>
 							</h4>
 						</div>
 						<div>
 							<p>
+								Comentario:<br>
 								<c:out value="${post.text}"></c:out>
 							</p>
 						</div>
 					</div>
 				</div>
+			</div>
 		</c:forEach>
 
 	</div>

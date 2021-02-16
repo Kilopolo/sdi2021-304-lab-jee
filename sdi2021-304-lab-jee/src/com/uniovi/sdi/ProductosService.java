@@ -21,12 +21,16 @@ public class ProductosService {
 	}
 
 	public void setNuevoProducto(Producto nuevoProducto) {
+//		System.out.println(getProductos().size());
 		ObjectContainer db = null;
 		try {
 			db = Db4oEmbedded.openFile("bdProductos");
 			db.store(nuevoProducto);
+			
+			
 		} finally {
 			db.close();
+//			System.out.println(getProductos().size());
 		}
 	}
 }

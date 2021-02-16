@@ -7,6 +7,12 @@ import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
 
 public class BlogPostsService {
+	
+	public BlogPostsService() {
+		// TODO Auto-generated constructor stub
+		Db4oEmbedded.newConfiguration();
+	}
+	
 	public List<Post> getPosts() {
 		List<Post> posts = new LinkedList<Post>();
 		ObjectContainer db = null;
@@ -28,6 +34,7 @@ public class BlogPostsService {
 			db.store(nuevoPost);
 		} finally {
 			db.close();
+
 		}
 	}
 

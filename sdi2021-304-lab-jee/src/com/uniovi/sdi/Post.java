@@ -33,6 +33,11 @@ public class Post {
 	public void setText(String text) {
 		this.text = text;
 	}
+
+	@Override
+	public String toString() {
+		return "Post [name=" + name + ", title=" + title + ", text=" + text + "]";
+	}
 	
 	
 	
