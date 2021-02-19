@@ -15,7 +15,7 @@ public class ProfessorService {
 	@Autowired
 	private ProfessorRepository professorRepository;
 	
-	public List<Professor> getProfessor() {
+	public List<Professor> getProfessors() {
 		List<Professor> professors = new ArrayList<Professor>();
 		professorRepository.findAll().forEach(professors::add);
 		return professors;

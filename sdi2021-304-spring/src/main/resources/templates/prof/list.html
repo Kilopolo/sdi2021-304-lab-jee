@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Notaneitor</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+	<!-- Barra de Navegación superior -->
+	<nav th:replace="fragments/nav" />
+
+
+
+	<div class="container">
+		<h2>Profesores</h2>
+		<p>Los profesores que hay son:</p>
+		<button type="button" id="updateButton" class="btn btn-default">Actualizar</button>
+		<script>
+			$("#updateButton").click(function() {
+				$("#tableMarks").load('/prof/list/update');
+			});
+		</script>
+		<div class="table-responsive">
+			<table class="table table-hover" th:fragment="tableProfessors"
+				id="tableMarks">
+				<thead>
+					<tr>
+						<th class="col-md-1">Id</th>
+						<th>Dni</th>
+						<th>Nombre</th>
+						<th>Apellido</th>
+						<th>Rol</th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+						<th class="col-md-1"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="professor : professorList">
+						<td th:text="${professor.id}">1</td>
+						<td th:text="${professor.dni}">dni123</td>
+						<td th:text="${professor.name}">nombre</td>
+						<td th:text="${professor.lastName}">apellido</td>
+						<td th:text="${professor.role}">rol</td>
+						<td><a th:href="${'/prof/details/' + professor.id}">detalles</a></td>
+						<td><a th:href="${'/prof/edit/' + professor.id}">modificar</a></td>
+						<td><a th:href="${'/prof/delete/' + professor.id}">eliminar</a></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer th:replace="fragments/footer" />
+</body>
+</html>

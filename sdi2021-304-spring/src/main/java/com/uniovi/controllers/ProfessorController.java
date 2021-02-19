@@ -15,12 +15,20 @@ import com.uniovi.services.ProfessorService;
 public class ProfessorController {
 	@Autowired // Inyectar el servicio
 	private ProfessorService professorService;
+	
+	//UPDATE
+	
+	@RequestMapping("/prof/list/update")
+	public String updateList(Model model){
+	model.addAttribute("professorList", professorService.getProfessors() );
+	return "prof/list :: tableProfessors";
+	}
 
 	// AÑADIR
 
 	@RequestMapping(value = "/prof/add", method = RequestMethod.GET)
 	public String getProfessor(Model model) {
-		model.addAttribute("professorsList", professorService.getProfessor());
+		model.addAttribute("professorsList", professorService.getProfessors());
 		return "prof/add";
 	}
 
@@ -38,23 +46,23 @@ public class ProfessorController {
 		return "prof/edit";
 	}
 
-	@RequestMapping(value = "/prof/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute Professor professor) {
-		Professor original = professorService.getProfessor(id);
+	@RequestMapping(value = "/prof/edit", method = RequestMethod.POST)
+	public String setEdit(Model model, @ModelAttribute Professor professor) {
+		Professor original = professorService.getProfessor(professor.getId());
 		// modificar solo score y description
 		original.setDni(professor.getDni());
 		original.setName(professor.getName());
 		original.setLastName(professor.getLastName());
 		original.setRole(professor.getRole());
 		professorService.addProfessor(original);
-		return "redirect:/prof/details/" + id;
+		return "redirect:/prof/details/" + professor.getId();
 	}
 
 	// VER DETALLE
 
 	@RequestMapping("/prof/details/{id}")
 	public String getDetail(Model model, @PathVariable Long id) {
-		model.addAttribute("mark", professorService.getProfessor(id));
+		model.addAttribute("professor", professorService.getProfessor(id));
 		return "prof/details";
 	}
 
