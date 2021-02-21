@@ -18,6 +18,13 @@ public class ProfessorController {
 	
 	//UPDATE
 	
+	@RequestMapping("/prof/list")
+	public String getList(Model model) {
+		model.addAttribute("professorList", professorService.getProfessors());
+		return "prof/list";
+	}
+
+	
 	@RequestMapping("/prof/list/update")
 	public String updateList(Model model){
 	model.addAttribute("professorList", professorService.getProfessors() );
@@ -46,7 +53,7 @@ public class ProfessorController {
 		return "prof/edit";
 	}
 
-	@RequestMapping(value = "/prof/edit", method = RequestMethod.POST)
+	@RequestMapping(value = "/prof/edit/{id}", method = RequestMethod.POST)
 	public String setEdit(Model model, @ModelAttribute Professor professor) {
 		Professor original = professorService.getProfessor(professor.getId());
 		// modificar solo score y description

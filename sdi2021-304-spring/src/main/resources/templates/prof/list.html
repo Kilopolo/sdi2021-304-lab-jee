@@ -43,8 +43,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="professor : professorList">
-						<td th:text="${professor.id}">1</td>
+					<tr th:each="professor : ${professorList}">
+						<td th:text="${professor.id}">1</td> 
 						<td th:text="${professor.dni}">dni123</td>
 						<td th:text="${professor.name}">nombre</td>
 						<td th:text="${professor.lastName}">apellido</td>
