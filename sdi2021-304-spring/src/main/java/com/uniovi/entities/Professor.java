@@ -57,6 +57,11 @@ public class Professor {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	@Override
+	public String toString() {
+		return "Professor [id=" + id + ", dni=" + dni + ", name=" + name + ", lastName=" + lastName + ", role=" + role
+				+ "]";
+	}
 	
 	
 	

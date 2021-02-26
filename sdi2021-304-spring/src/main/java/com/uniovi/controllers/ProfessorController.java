@@ -49,7 +49,8 @@ public class ProfessorController {
 
 	@RequestMapping(value = "/prof/edit/{id}", method = RequestMethod.GET)
 	public String getEdit(Model model, @PathVariable Long id) {
-		model.addAttribute("prof", professorService.getProfessor(id));
+		model.addAttribute("professor", professorService.getProfessor(id));
+		System.out.println(professorService.getProfessor(id)); //TODO borrar
 		return "prof/edit";
 	}
 
