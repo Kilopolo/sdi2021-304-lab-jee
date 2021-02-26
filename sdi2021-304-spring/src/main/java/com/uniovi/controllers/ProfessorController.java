@@ -3,6 +3,8 @@ package com.uniovi.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +12,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.uniovi.entities.Professor;
 import com.uniovi.services.ProfessorService;
+import com.uniovi.validators.ProfessorEditFormValidator;
 
 @Controller
 public class ProfessorController {
 	@Autowired // Inyectar el servicio
 	private ProfessorService professorService;
-	
+	@Autowired
+	private ProfessorEditFormValidator pef;
 	//UPDATE
 	
 	@RequestMapping("/prof/list")
@@ -55,13 +59,17 @@ public class ProfessorController {
 	}
 
 	@RequestMapping(value = "/prof/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @ModelAttribute Professor professor) {
+	public String setEdit(Model model, @Validated Professor professor, BindingResult br) {
 		Professor original = professorService.getProfessor(professor.getId());
 		// modificar solo score y description
 		original.setDni(professor.getDni());
 		original.setName(professor.getName());
 		original.setLastName(professor.getLastName());
 		original.setRole(professor.getRole());
+		pef.validate(original, br);
+		if (br.hasErrors()) {
+			return "/prof/edit";
+		}
 		professorService.addProfessor(original);
 		return "redirect:/prof/details/" + professor.getId();
 	}
