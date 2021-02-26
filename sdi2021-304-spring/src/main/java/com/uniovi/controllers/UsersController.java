@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.uniovi.entities.Professor;
 import com.uniovi.entities.User;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
@@ -65,12 +66,12 @@ public class UsersController {
 		return "user/edit";
 	}
 
-	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
-	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute User user) {
-		user.setId(id);
-		usersService.addUser(user);
-		return "redirect:/user/details/" + id;
-	}
+//	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+//	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute User user) {
+//		user.setId(id);
+//		usersService.addUser(user);
+//		return "redirect:/user/details/" + id;
+//	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
 	public String signup(@Validated User user, BindingResult result) {
@@ -102,5 +103,32 @@ public class UsersController {
 		model.addAttribute("markList", activeUser.getMarks());
 		return "home";
 	}
+	
+	// EDITAR
+
+//	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.GET)
+//	public String getEdit(Model model, @PathVariable Long id) {
+//		model.addAttribute("user", usersService.getUser(id));
+//		return "user/edit";
+//	}
+
+	@RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+	public String setEdit(Model model, @ModelAttribute User user) {
+		User original = usersService.getUser(user.getId());
+		// modificar solo score y description
+		original.setDni(user.getDni());
+		original.setName(user.getName());
+		original.setLastName(user.getLastName());
+		usersService.addUser(original);
+		return "redirect:/user/details/" + user.getId();
+	}
+
+	// VER DETALLE
+
+//	@RequestMapping("/user/details/{id}")
+//	public String getDetail(Model model, @PathVariable Long id) {
+//		model.addAttribute("professor", professorService.getProfessor(id));
+//		return "user/details";
+//	}
 
 }
