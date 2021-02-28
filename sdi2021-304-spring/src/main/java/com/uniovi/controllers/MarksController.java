@@ -1,12 +1,14 @@
 package com.uniovi.controllers;
 
 import java.security.Principal;
+import java.util.LinkedList;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,7 +40,7 @@ public class MarksController {
 	private HttpSession httpSession;
 
 	@RequestMapping("/mark/list")
-	public String getList(Model model, Principal principal,
+	public String getList(Model model,Pageable pageable, Principal principal,
 			@RequestParam(value = "", required = false) String searchText) {
 
 		// HISTORIAL Set<Mark> consultedList= (Set<Mark>)
@@ -52,21 +54,32 @@ public class MarksController {
 //		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //		String dni = auth.getName();
 //		User user = usersService.getUserByDni(dni);
+		
 		String dni = principal.getName(); // DNI es el name de la autenticación
 		User user = usersService.getUserByDni(dni);
+		Page<Mark> marks = new PageImpl<Mark>(new LinkedList<Mark>());
 		if (searchText != null && !searchText.isEmpty()) {
-			model.addAttribute("markList", marksService.searchMarksByDescriptionAndNameForUser(searchText, user));
+			marks = marksService
+					.searchMarksByDescriptionAndNameForUser(pageable, searchText, user);
+//			model.addAttribute("markList", marksService.searchMarksByDescriptionAndNameForUser(searchText, user));
 		} else {
-			model.addAttribute("markList", marksService.getMarksForUser(user));
+			marks = marksService.getMarksForUser(pageable, user);
+			model.addAttribute("markList", marksService.getMarksForUser(pageable,user));
 		}
-
+		model.addAttribute("markList", marks.getContent());
+		model.addAttribute("page", marks);
 //		model.addAttribute("markList", marksService.getMarks());
 		return "mark/list";
 	}
 
 	@RequestMapping("/mark/list/update")
-	public String updateList(Model model) {
-		model.addAttribute("markList", marksService.getMarks());
+	public String updateList(Model model, Pageable pageable, Principal principal) {
+//		model.addAttribute("markList", marksService.getMarks());
+//		return "mark/list :: tableMarks";
+		String dni = principal.getName() ; // DNI es el name de la autenticación
+		User user = usersService.getUserByDni(dni);
+		Page<Mark> marks = marksService.getMarksForUser(pageable, user);
+		model.addAttribute("markList", marks.getContent() );
 		return "mark/list :: tableMarks";
 	}
 
