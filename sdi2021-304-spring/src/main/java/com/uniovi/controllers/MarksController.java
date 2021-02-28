@@ -1,5 +1,10 @@
 package com.uniovi.controllers;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +18,6 @@ import com.uniovi.entities.Mark;
 import com.uniovi.services.MarksService;
 import com.uniovi.services.UsersService;
 import com.uniovi.validators.MarksFormValidator;
-import com.uniovi.validators.ProfessorEditFormValidator;
 
 @Controller
 public class MarksController {
@@ -27,8 +31,20 @@ public class MarksController {
 	@Autowired
 	private MarksFormValidator mfv;
 	
+	@Autowired
+	private HttpSession httpSession;
+	
+	
+	
 	@RequestMapping("/mark/list")
 	public String getList(Model model) {
+		/*//HISTORIAL
+		 * Set<Mark> consultedList= (Set<Mark>)
+		 * httpSession.getAttribute("consultedList"); if ( consultedList == null ) {
+		 * consultedList = new HashSet<Mark>(); } model.addAttribute("consultedList",
+		 * consultedList);
+		 */
+		
 		model.addAttribute("markList", marksService.getMarks());
 		return "mark/list";
 	}
