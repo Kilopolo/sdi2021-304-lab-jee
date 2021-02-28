@@ -124,9 +124,9 @@
 
 							<div sec:authorize="hasRole('ROLE_STUDENT')">
 								<div th:if="${mark.resend}">
-									<a th:href="${'/mark/' + mark.id + '/noresend'}">Reenviar</a>
+									<a th:href="${'/mark/' + mark.id + '/noresend'}"><!-- Reenviar -->
 									<button type="button" th:id="${'resendButton' + mark.id}"
-										class="btn btn-info">Reenviar</button>
+										class="btn btn-info">Reenviar</button></a>
 									<script th:inline="javascript">
 										/*<![CDATA[*/
 										$("#resendButton[[${mark.id}]]").click(function() {
@@ -144,9 +144,9 @@
 									</script>
 								</div>
 								<div th:unless="${mark.resend}">
-									<a th:href="${'/mark/' + mark.id + '/resend'}">No reenviar</a>
+									<a th:href="${'/mark/' + mark.id + '/resend'}"><!-- No reenviar -->
 									<button type="button" th:id="${'noresendButton' + mark.id}"
-										class="btn btn-default">No reenviar</button>
+										class="btn btn-default">No reenviar</button></a>
 									<script th:inline="javascript">
 										/*<![CDATA[*/
 										$("#noresendButton[[${mark.id}]]").click(function() {
