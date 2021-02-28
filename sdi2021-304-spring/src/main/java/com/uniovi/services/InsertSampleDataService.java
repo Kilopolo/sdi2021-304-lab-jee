@@ -24,8 +24,12 @@ public class InsertSampleDataService {
 	@PostConstruct
 	public void init() {
 
+		User admin = new User("12345678A", "Admin", "Admin");
+		admin.setPassword("123456");
+		admin.setRole(rolesService.getRoles()[2]);
+		
 		for (int i = 0; i < 10; i++) {
-			Professor p1 = new Professor("dni" + i, "name" + i, "lastName" + i, "role" + i);
+			Professor p1 = new Professor("dni" + i, "name" + i, "lastName" + i, rolesService.getRoles()[1]);
 			professorService.addProfessor(p1);
 		}
 

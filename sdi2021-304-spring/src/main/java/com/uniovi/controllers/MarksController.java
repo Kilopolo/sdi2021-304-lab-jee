@@ -27,32 +27,30 @@ public class MarksController {
 
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	private MarksFormValidator mfv;
-	
+
 	@Autowired
 	private HttpSession httpSession;
-	
-	
-	
+
 	@RequestMapping("/mark/list")
 	public String getList(Model model) {
-		/*//HISTORIAL
-		 * Set<Mark> consultedList= (Set<Mark>)
+		/*
+		 * //HISTORIAL Set<Mark> consultedList= (Set<Mark>)
 		 * httpSession.getAttribute("consultedList"); if ( consultedList == null ) {
 		 * consultedList = new HashSet<Mark>(); } model.addAttribute("consultedList",
 		 * consultedList);
 		 */
-		
+
 		model.addAttribute("markList", marksService.getMarks());
 		return "mark/list";
 	}
 
 	@RequestMapping("/mark/list/update")
-	public String updateList(Model model){
-	model.addAttribute("markList", marksService.getMarks() );
-	return "mark/list :: tableMarks";
+	public String updateList(Model model) {
+		model.addAttribute("markList", marksService.getMarks());
+		return "mark/list :: tableMarks";
 	}
 
 	@RequestMapping(value = "/mark/edit/{id}")
@@ -82,10 +80,10 @@ public class MarksController {
 		return "mark/details";
 	}
 
-	@RequestMapping(value="/mark/add")
-	public String getMark(Model model){
-	model.addAttribute("usersList", usersService.getUsers());
-	return "mark/add";
+	@RequestMapping(value = "/mark/add")
+	public String getMark(Model model) {
+		model.addAttribute("usersList", usersService.getUsers());
+		return "mark/add";
 	}
 
 	@RequestMapping(value = "/mark/add", method = RequestMethod.POST)
@@ -97,6 +95,18 @@ public class MarksController {
 	@RequestMapping("/mark/delete/{id}")
 	public String deleteMark(@PathVariable Long id) {
 		marksService.deleteMark(id);
+		return "redirect:/mark/list";
+	}
+
+	@RequestMapping(value = "/mark/{id}/resend", method = RequestMethod.GET)
+	public String setResendTrue(Model model, @PathVariable Long id) {
+		marksService.setMarkResend(true, id);
+		return "redirect:/mark/list";
+	}
+
+	@RequestMapping(value = "/mark/{id}/noresend", method = RequestMethod.GET)
+	public String setResendFalse(Model model, @PathVariable Long id) {
+		marksService.setMarkResend(false, id);
 		return "redirect:/mark/list";
 	}
 }
