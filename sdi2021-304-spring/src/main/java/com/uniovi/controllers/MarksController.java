@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.uniovi.entities.Mark;
 import com.uniovi.entities.User;
@@ -37,7 +38,8 @@ public class MarksController {
 	private HttpSession httpSession;
 
 	@RequestMapping("/mark/list")
-	public String getList(Model model, Principal principal) {
+	public String getList(Model model, Principal principal,
+			@RequestParam(value = "", required = false) String searchText) {
 
 		// HISTORIAL Set<Mark> consultedList= (Set<Mark>)
 //		httpSession.getAttribute("consultedList");
@@ -45,14 +47,19 @@ public class MarksController {
 //			consultedList = new HashSet<Mark>();
 //		}
 //		model.addAttribute("consultedList", consultedList);
-		
-		//usuario autenticado a través del	SecurityContextHolder
+
+		// usuario autenticado a través del SecurityContextHolder
 //		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //		String dni = auth.getName();
 //		User user = usersService.getUserByDni(dni);
 		String dni = principal.getName(); // DNI es el name de la autenticación
 		User user = usersService.getUserByDni(dni);
-		model.addAttribute("markList", marksService.getMarksForUser(user));
+		if (searchText != null && !searchText.isEmpty()) {
+			model.addAttribute("markList", marksService.searchMarksByDescriptionAndNameForUser(searchText, user));
+		} else {
+			model.addAttribute("markList", marksService.getMarksForUser(user));
+		}
+
 //		model.addAttribute("markList", marksService.getMarks());
 		return "mark/list";
 	}
