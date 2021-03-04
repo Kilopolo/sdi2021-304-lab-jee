@@ -1,0 +1,11 @@
+
+<tr th:each="mark : ${markList}">
+	<td th:text="${mark.id}">1</td>
+	<td th:text="${mark.description}">Ejercicio 1</td>
+	<td th:text="${mark.score}">10</td>
+	<td><a th:href="${'/mark/details/' + mark.id}">detalles</a></td>
+	<td><a th:href="${'/mark/edit/' + mark.id}"
+		sec:authorize="hasRole('ROLE_ADMIN')">modificar</a></td>
+	<td><a th:href="${'/mark/delete/' + mark.id}"
+		sec:authorize="hasRole('ROLE_ADMIN')">eliminar</a></td>
+</tr>

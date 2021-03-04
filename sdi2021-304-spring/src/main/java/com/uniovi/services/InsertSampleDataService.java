@@ -24,9 +24,29 @@ public class InsertSampleDataService {
 	@PostConstruct
 	public void init() {
 
-		User admin = new User("12345678A", "Admin", "Admin");
+		User user = new User("user", "user", "user");
+		user.setPassword("123456");
+		user.setRole(rolesService.getRoles()[0]);
+		
+		User prof = new User("prof", "prof", "prof");
+		prof.setPassword("123456");
+		prof.setRole(rolesService.getRoles()[1]);
+		
+		User admin = new User("admin", "Admin", "Admin");
 		admin.setPassword("123456");
 		admin.setRole(rolesService.getRoles()[2]);
+		
+		Set userMarks = new HashSet<Mark>() {
+			{
+				add(new Mark("Nota user1", 10.0, user));
+				add(new Mark("Nota user2", 8.0, user));
+				add(new Mark("Nota user3", 9.0, user));
+			}
+		};
+		user.setMarks(userMarks);
+		usersService.addUser(user);
+		usersService.addUser(prof);
+		usersService.addUser(admin);
 		
 		for (int i = 0; i < 10; i++) {
 			Professor p1 = new Professor("dni" + i, "name" + i, "lastName" + i, rolesService.getRoles()[1]);
