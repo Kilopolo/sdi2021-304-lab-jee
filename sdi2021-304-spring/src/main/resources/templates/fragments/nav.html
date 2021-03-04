@@ -40,7 +40,7 @@
 						class="caret"></span>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="/prof/add" th:text="#{nav.addProf}">Agregar
+						<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="/prof/add" th:text="#{nav.addProf}">Agregar
 								profesor</a></li>
 						<li><a href="/prof/list" th:text="#{nav.listProf}">Ver
 								profesores</a></li>

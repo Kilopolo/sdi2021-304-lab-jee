@@ -49,9 +49,9 @@
 						<td th:text="${professor.name}">nombre</td>
 						<td th:text="${professor.lastName}">apellido</td>
 						<td th:text="${professor.role}">rol</td>
-						<td><a th:href="${'/prof/details/' + professor.id}">detalles</a></td>
-						<td><a th:href="${'/prof/edit/' + professor.id}">modificar</a></td>
-						<td><a th:href="${'/prof/delete/' + professor.id}">eliminar</a></td>
+						<td><a th:href="${'/prof/details/' + professor.id}" sec:authorize="hasAnyRole('ROLE_PROFESSOR', 'ROLE_ADMIN')" >detalles</a></td>
+						<td><a th:href="${'/prof/edit/' + professor.id}" sec:authorize="hasRole('ROLE_ADMIN')">modificar</a></td>
+						<td><a th:href="${'/prof/delete/' + professor.id}" sec:authorize="hasRole('ROLE_ADMIN')">eliminar</a></td>
 					</tr>
 				</tbody>
 			</table>
