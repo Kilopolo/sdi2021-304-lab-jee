@@ -66,20 +66,21 @@ public class UsersController {
 //	}
 	
 	@RequestMapping("/user/list")
-	public String getListado(Model model, Principal principal,
+	public String getListado(Model model, Pageable pageable, Principal principal,
 			@RequestParam(value = "", required = false) String searchText) {
 		
 		String dni = principal.getName(); // DNI es el name de la autenticación
 		User user = usersService.getUserByDni(dni);
-		List<User> users = new ArrayList<User>();
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
 		
 		if (searchText != null && !searchText.isEmpty()) {
-			users = usersService.searchUserByNameAndLastname(searchText, user);
+			users = usersService.searchUserByNameAndLastname(pageable,searchText, user);
 		}else {
-			users = usersService.getUsers();
+			users = usersService.getUsers(pageable);
 		}
 		
-		model.addAttribute("usersList", users);
+		model.addAttribute("usersList", users.getContent());
+		model.addAttribute("page", users);
 		return "user/list";
 	}
 

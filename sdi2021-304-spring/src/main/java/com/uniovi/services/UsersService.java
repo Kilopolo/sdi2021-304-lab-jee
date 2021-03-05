@@ -1,11 +1,15 @@
 package com.uniovi.services;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +28,17 @@ public class UsersService {
 	public void init() {
 	}
 
+	public Page<User> getUsers(Pageable pageable) {
+//		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+
+		Page<User> users = usersRepository.findAll(pageable); // .forEach(users::add)
+		return users;
+	}
+
 	public List<User> getUsers() {
 		List<User> users = new ArrayList<User>();
-		usersRepository.findAll().forEach(users::add);
+
+		usersRepository.findAll().forEach(users::add); //
 		return users;
 	}
 
@@ -51,11 +63,11 @@ public class UsersService {
 		usersRepository.deleteById(id);
 	}
 
-	public List<User> searchUserByNameAndLastname(String searchText, User user) {
-		List<User> users = new ArrayList<User>();
-		searchText = "%"+searchText+"%";
+	public Page<User> searchUserByNameAndLastname(Pageable pageable, String searchText, User user) {
+		Page<User> users = new PageImpl<User>(new LinkedList<User>());
+		searchText = "%" + searchText + "%";
 		if (user.getRole().equals("ROLE_ADMIN")) {
-			users = usersRepository.searchUserByNameAndLastname(searchText, user);
+			users = usersRepository.searchUserByNameAndLastname(pageable, searchText, user);
 		}
 		return users;
 	}

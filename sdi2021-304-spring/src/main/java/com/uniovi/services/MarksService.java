@@ -54,6 +54,8 @@ public class MarksService {
 	}
 
 	public void addMark(Mark mark) {
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		String dni = auth.getName();
 		// Si en Id es null le asignamos el ultimo + 1 de la lista
 		marksRepository.save(mark);
 	}
