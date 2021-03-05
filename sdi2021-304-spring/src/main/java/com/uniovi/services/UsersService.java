@@ -50,4 +50,13 @@ public class UsersService {
 	public void deleteUser(Long id) {
 		usersRepository.deleteById(id);
 	}
+
+	public List<User> searchUserByNameAndLastname(String searchText, User user) {
+		List<User> users = new ArrayList<User>();
+		searchText = "%"+searchText+"%";
+		if (user.getRole().equals("ROLE_ADMIN")) {
+			users = usersRepository.searchUserByNameAndLastname(searchText, user);
+		}
+		return users;
+	}
 }

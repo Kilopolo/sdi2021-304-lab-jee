@@ -1,6 +1,14 @@
 package com.uniovi.controllers;
 
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,7 +19,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import com.uniovi.entities.Mark;
 import com.uniovi.entities.Professor;
 import com.uniovi.entities.User;
 import com.uniovi.services.RolesService;
@@ -33,9 +43,43 @@ public class UsersController {
 	@Autowired
 	private RolesService rolesService;
 	
+	
+//	@RequestMapping("/mark/list")
+//	public String getList(Model model,Pageable pageable, Principal principal,
+//			@RequestParam(value = "", required = false) String searchText) {
+//		
+//		String dni = principal.getName(); // DNI es el name de la autenticación
+//		User user = usersService.getUserByDni(dni);
+//		Page<Mark> marks = new PageImpl<Mark>(new LinkedList<Mark>());
+//		if (searchText != null && !searchText.isEmpty()) {
+//			marks = 
+//					.searchMarksByDescriptionAndNameForUser(pageable, searchText, user);
+////			model.addAttribute("markList", marksService.searchMarksByDescriptionAndNameForUser(searchText, user));
+//		} else {
+//			marks = usersService.getMarksForUser(pageable, user);
+//			model.addAttribute("markList", marksService.getMarksForUser(pageable,user));
+//		}
+//		model.addAttribute("markList", marks.getContent());
+//		model.addAttribute("page", marks);
+////		model.addAttribute("markList", marksService.getMarks());
+//		return "mark/list";
+//	}
+	
 	@RequestMapping("/user/list")
-	public String getListado(Model model) {
-		model.addAttribute("usersList", usersService.getUsers());
+	public String getListado(Model model, Principal principal,
+			@RequestParam(value = "", required = false) String searchText) {
+		
+		String dni = principal.getName(); // DNI es el name de la autenticación
+		User user = usersService.getUserByDni(dni);
+		List<User> users = new ArrayList<User>();
+		
+		if (searchText != null && !searchText.isEmpty()) {
+			users = usersService.searchUserByNameAndLastname(searchText, user);
+		}else {
+			users = usersService.getUsers();
+		}
+		
+		model.addAttribute("usersList", users);
 		return "user/list";
 	}
 
