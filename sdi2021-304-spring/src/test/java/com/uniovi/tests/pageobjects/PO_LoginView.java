@@ -10,7 +10,7 @@ import org.openqa.selenium.WebElement;
 public class PO_LoginView {
 
 	public static void fillForm(WebDriver driver, String dnip, String passwordp) {
-		WebElement dni = driver.findElement(By.name("dni"));
+		WebElement dni = driver.findElement(By.name("username"));
 		dni.click();
 		dni.clear();
 		dni.sendKeys(dnip);

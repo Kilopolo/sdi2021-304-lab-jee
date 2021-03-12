@@ -1,6 +1,9 @@
 
 package com.uniovi.tests;
 
+import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -10,12 +13,16 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
 import com.uniovi.tests.pageobjects.PO_LoginView;
@@ -25,6 +32,7 @@ import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
 import com.uniovi.tests.util.SeleniumUtils;
 
+//import static org.openqa.selenium.support.locators.RelativeLocator.withTagName;
 //Ordenamos las pruebas por el nombre del método
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 //@SpringBootTest
@@ -33,7 +41,8 @@ public class Sdi2021304SpringApplicationTests {
 	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
 	// automáticas)):
 	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox65\\firefox.exe";
-	static String Geckdriver024 = "H:\\OneDrive\\OneDrive - Universidad de Oviedo\\Uni\\3Curso\\2ºSemestre\\Sistemas Distribuidos e Internet\\Laboratorio\\lab5\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
+//	static String Geckdriver024 = "H:\\OneDrive\\OneDrive - Universidad de Oviedo\\Uni\\3Curso\\2ºSemestre\\Sistemas Distribuidos e Internet\\Laboratorio\\lab5\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
+	static String Geckdriver024 = "C:\\geckodriver024win64.exe";
 	// En MACOSX (Debe ser la versión 65.0.1 y desactivar las actualizacioens
 	// automáticas):
 	// static String PathFirefox65 =
@@ -51,13 +60,18 @@ public class Sdi2021304SpringApplicationTests {
 	}
 
 	// Antes de cada prueba se navega al URL home de la aplicación
-	@Before
+	@BeforeEach
 	public void setUp() {
+		navigateUrl();
+	}
+
+	private void navigateUrl() {
 		driver.navigate().to(URL);
+		new WebDriverWait(driver, 2);
 	}
 
 	// Después de cada prueba se borran las cookies del navegador
-	@After
+	@AfterEach
 	public void tearDown() {
 		driver.manage().deleteAllCookies();
 	}
@@ -72,6 +86,24 @@ public class Sdi2021304SpringApplicationTests {
 	static public void end() {
 		// Cerramos el navegador al finalizar las pruebas
 		driver.quit();
+	}
+
+	@Test
+	public void PruebaConexion() {
+		navigateUrl();
+
+		System.out.println(driver.getCurrentUrl());
+		System.out.println();
+
+		WebElement prueba = driver.findElement(By.id("prueba"));//// *[@id="prueba"] SIvCob
+//		WebElement SIvCob= driver.findElement(By.id("SIvCob"));////*[@id="prueba"] SIvCob
+//		WebElement emailAddressField = driver.findElement(withTagName("input").above(passwordField));
+		System.out.println("-------------------");
+		System.out.println(prueba.getText());
+		assertEquals(prueba.getText(), "Lorem ipsum dolor sit amet, consectetur adipiscing");
+
+//		WebElement we = driver.getTitle();
+
 	}
 
 	// PR01. Acceder a la página principal /
@@ -117,6 +149,7 @@ public class Sdi2021304SpringApplicationTests {
 	// .... pagination pagination-centered, Error.signup.dni.length
 	@Test
 	public void PR06() {
+
 		// Vamos al formulario de registro
 		PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
 		// Rellenamos el formulario.
@@ -141,62 +174,41 @@ public class Sdi2021304SpringApplicationTests {
 	// PR07. Loguearse con exito desde el ROl de Usuario, 99999990D, 123456
 	@Test
 	public void PR07() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990A", "123456");
-		// COmprobamos que entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_PrivateView.login(driver, "99999990A", "123456", "Notas del usuario");
 	}
 
-	// TODO PR08: Identificación válida con usuario de ROL profesor (
+	//  PR08: Identificación válida con usuario de ROL profesor (
 	// 99999993D/123456).
 	@Test
 	public void PR08() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999993D", "123456");
-		// COmprobamos que entramos en la pagina privada de Profesor
-		PO_View.checkElement(driver, "text", "Gestión de Profesores");
+
+		PO_PrivateView.login(driver, "99999993D", "123456", "Gestión de Profesores");
+
 	}
 
-	// TODO PR09: Identificación válida con usuario de ROL Administrador
+	//  PR09: Identificación válida con usuario de ROL Administrador
 	// (99999988F/123456).
 	@Test
 	public void PR09() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999988F", "123456");
-		// COmprobamos que entramos en la pagina privada de Administrador
-		PO_View.checkElement(driver, "text", "Gestión de Usuarios");
+
+		PO_PrivateView.login(driver, "99999988F", "123456", "Gestión de Usuarios");
+
 	}
 
-	// TODO PR10: Identificación inválida con usuario de ROL alumno (
+	//  PR10: Identificación inválida con usuario de ROL alumno (
 	// 99999990A/123456).
 	@Test
 	public void PR10() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990", "123456");
+		PO_PrivateView.login(driver, "99999990", "123456", "Idéntificate");
 
-		// COmprobamos que no entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Idéntificate");
 	}
 
-	// TODO PR11: Identificación válida y desconexión con usuario de ROL usuario
+	//  PR11: Identificación válida y desconexión con usuario de ROL usuario
 	// (99999990A/123456)
 	@Test
 	public void PR11() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990A", "123456");
-		// COmprobamos que entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_PrivateView.login(driver, "99999990A", "123456", "Notas del usuario");
 		// desconectamos
 		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
 		// comprobamos estar desconectados
@@ -207,12 +219,7 @@ public class Sdi2021304SpringApplicationTests {
 	// usando el rol de estudiante.
 	@Test
 	public void PR12() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990A", "123456");
-		// COmprobamos que entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_PrivateView.login(driver, "99999990A", "123456", "Notas del usuario");
 		// Contamos el número de filas de notas
 		List<WebElement> elementos = SeleniumUtils.EsperaCargaPagina(driver, "free", "//tbody/tr",
 				PO_View.getTimeout());
@@ -226,15 +233,11 @@ public class Sdi2021304SpringApplicationTests {
 	// P13. Ver la lista de Notas.
 	@Test
 	public void PR13() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999990A", "123456");
-		// COmprobamos que entramos en la pagina privada de Alumno
-		PO_View.checkElement(driver, "text", "Notas del usuario");
+		PO_PrivateView.login(driver, "99999990A", "123456", "Notas del usuario");
 		SeleniumUtils.esperarSegundos(driver, 1);
 		// Contamos las notas
-		By enlace = By.xpath("//td[contains(text(), 'Nota A2')]/followingsibling::*[2]");
+		By enlace = By.xpath("//td[contains(text(), 'Nota A2')]/following-sibling::*[2]");
+		System.out.println(enlace);
 		driver.findElement(enlace).click();
 		SeleniumUtils.esperarSegundos(driver, 1);
 		// Esperamos por la ventana de detalle
@@ -248,6 +251,7 @@ public class Sdi2021304SpringApplicationTests {
 	// P14. Esta prueba podría encapsularse mejor ...
 	@Test
 	public void PR14() {
+		PO_PrivateView.login(driver, "99999993D", "123456", "99999993D");
 		// Vamos al formulario de logueo.
 		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
 		// Rellenamos el formulario
@@ -312,12 +316,9 @@ public class Sdi2021304SpringApplicationTests {
 	// PRN. Ver la lista de Notas.
 	@Test
 	public void PR15() {
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999993D", "123456");
-		// COmprobamos que entramos en la pagina privada del Profesor
-		PO_View.checkElement(driver, "text", "99999993D");
+
+		PO_PrivateView.login(driver, "99999993D", "123456", "99999993D");
+
 		// Pinchamos en la opción de menu de Notas: //li[contains(@id, 'marks-menu')]/a
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'marks-menu')]/a");
 		elementos.get(0).click();
@@ -325,7 +326,7 @@ public class Sdi2021304SpringApplicationTests {
 		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'mark/list')]");
 		elementos.get(0).click();
 		// Esperamos a que se muestren los enlaces de paginacion la lista de notas
-		elementos = PO_View.checkElement(driver, "free", "//a[contains(@class, 'pagelink')]");
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@class, 'page-link')]");
 		// Nos vamos a la última página
 		elementos.get(3).click();
 		// Esperamos a que aparezca la Nueva nota en la ultima pagina
