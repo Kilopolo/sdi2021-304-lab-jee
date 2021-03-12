@@ -1,29 +1,20 @@
 
 package com.uniovi.tests;
-/*package com.uniovi;
-
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
-
-@SpringBootTest
-class Sdi2021304SpringApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
-
-}*/
-import static org.junit.Assert.*;
-import org.junit.*;
-import org.junit.jupiter.api.Test;
+import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
+import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_Properties;
-
-import org.junit.runners.MethodSorters;
+import com.uniovi.tests.pageobjects.PO_RegisterView;
+import com.uniovi.tests.pageobjects.PO_View;
 //Ordenamos las pruebas por el nombre del método
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 //@SpringBootTest
@@ -31,7 +22,7 @@ public class Sdi2021304SpringApplicationTests {
 
 	// En Windows (Debe ser la versión 65.0.1 y desactivar las actualizacioens
 	// automáticas)):
-	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
+	static String PathFirefox65 = "C:\\Program Files\\Mozilla Firefox65\\firefox.exe";
 	static String Geckdriver024 = "H:\\OneDrive\\OneDrive - Universidad de Oviedo\\Uni\\3Curso\\2ºSemestre\\Sistemas Distribuidos e Internet\\Laboratorio\\lab5\\PL-SDI-Sesión5-material\\geckodriver024win64.exe";
 	// En MACOSX (Debe ser la versión 65.0.1 y desactivar las actualizacioens
 	// automáticas):
@@ -98,6 +89,102 @@ public class Sdi2021304SpringApplicationTests {
 	PO_HomeView.checkChangeIdiom(driver, "btnSpanish", "btnEnglish",
 	PO_Properties.getSPANISH(), PO_Properties.getENGLISH());
 	//SeleniumUtils.esperarSegundos(driver, 2);
+	}
+	
+	
+	//PR05. Prueba del formulario de registro. registro con datos correctos
+	@Test
+	public void PR05() {
+	//Vamos al formulario de registro
+	PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+	//Rellenamos el formulario.
+	PO_RegisterView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777",
+	"77777");
+	//Comprobamos que entramos en la sección privada
+	PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//PR06. Prueba del formulario de registro. DNI repetido en la BD, Nombre corto, .... pagination	pagination-centered, Error.signup.dni.length
+	@Test
+	public void PR06() {
+	//Vamos al formulario de registro
+	PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+	//Rellenamos el formulario.
+	PO_RegisterView.fillForm(driver, "99999990A", "Josefo", "Perez", "77777",
+	"77777");
+	PO_View.getP();
+	//COmprobamos el error de DNI repetido.
+	PO_RegisterView.checkKey(driver, "Error.signup.dni.duplicate",
+	PO_Properties.getSPANISH() );
+	//Rellenamos el formulario.
+	PO_RegisterView.fillForm(driver, "99999990B", "Jose", "Perez", "77777",
+	"77777");
+	//COmprobamos el error de Nombre corto .
+	PO_RegisterView.checkKey(driver, "Error.signup.name.length",
+	PO_Properties.getSPANISH() );
+	//Rellenamos el formulario.
+	PO_RegisterView.fillForm(driver, "99999990B", "Josefo", "Per", "77777",
+	"77777");
+	}
+	
+	//TODO Te dejamos para ti en el mismo caso de test comprobar “errores” en el resto de los campos.
+	
+	
+	// Te dejamos para ti la creación del PO PO_LoginView. Inspírate en	PO_RegisterView.
+	
+	//PR07. Loguearse con exito desde el ROl de Usuario, 99999990D, 123456
+	@Test
+	public void PR07() {
+	//Vamos al formulario de logueo.
+	PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+	//Rellenamos el formulario
+	PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+	//COmprobamos que entramos en la pagina privada de Alumno
+	PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//TODO PR08: Identificación válida con usuario de ROL profesor ( 99999993D/123456).
+	@Test
+	public void PR08() {
+	//Vamos al formulario de logueo.
+	PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+	//Rellenamos el formulario
+	PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+	//COmprobamos que entramos en la pagina privada de Alumno
+	PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//TODO PR09: Identificación válida con usuario de ROL Administrador (99999988F/123456).
+	@Test
+	public void PR09() {
+	//Vamos al formulario de logueo.
+	PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+	//Rellenamos el formulario
+	PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+	//COmprobamos que entramos en la pagina privada de Alumno
+	PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//TODO PR10: Identificación inválida con usuario de ROL alumno ( 99999990A/123456).
+	@Test
+	public void PR10() {
+	//Vamos al formulario de logueo.
+	PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+	//Rellenamos el formulario
+	PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+	//COmprobamos que entramos en la pagina privada de Alumno
+	PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	//TODO PR11: Identificación válida y desconexión con usuario de ROL usuario (99999990A/123456)
+	@Test
+	public void PR11() {
+	//Vamos al formulario de logueo.
+	PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+	//Rellenamos el formulario
+	PO_LoginView.fillForm(driver, "99999990A" , "123456" );
+	//COmprobamos que entramos en la pagina privada de Alumno
+	PO_View.checkElement(driver, "text", "Notas del usuario");
 	}
 	
 }
