@@ -1,16 +1,12 @@
 
 package com.uniovi.tests;
 
-import static org.junit.Assert.fail;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 //import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.AfterEach;
@@ -21,11 +17,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
-import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_PrivateView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
@@ -62,11 +56,11 @@ public class Sdi2021304SpringApplicationTests {
 	// Antes de cada prueba se navega al URL home de la aplicación
 	@BeforeEach
 	public void setUp() {
-		navigateUrl();
+		navigateUrl(this.URL,"");
 	}
 
-	private void navigateUrl() {
-		driver.navigate().to(URL);
+	private void navigateUrl(String URL,String pag) {
+		driver.navigate().to(URL+pag);
 		new WebDriverWait(driver, 2);
 	}
 
@@ -88,23 +82,7 @@ public class Sdi2021304SpringApplicationTests {
 		driver.quit();
 	}
 
-	@Test
-	public void PruebaConexion() {
-		navigateUrl();
 
-		System.out.println(driver.getCurrentUrl());
-		System.out.println();
-
-		WebElement prueba = driver.findElement(By.id("prueba"));//// *[@id="prueba"] SIvCob
-//		WebElement SIvCob= driver.findElement(By.id("SIvCob"));////*[@id="prueba"] SIvCob
-//		WebElement emailAddressField = driver.findElement(withTagName("input").above(passwordField));
-		System.out.println("-------------------");
-		System.out.println(prueba.getText());
-		assertEquals(prueba.getText(), "Lorem ipsum dolor sit amet, consectetur adipiscing");
-
-//		WebElement we = driver.getTitle();
-
-	}
 
 	// PR01. Acceder a la página principal /
 	@Test
@@ -252,12 +230,12 @@ public class Sdi2021304SpringApplicationTests {
 	@Test
 	public void PR14() {
 		PO_PrivateView.login(driver, "99999993D", "123456", "99999993D");
-		// Vamos al formulario de logueo.
-		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-		// Rellenamos el formulario
-		PO_LoginView.fillForm(driver, "99999993D", "123456");
-		// COmprobamos que entramos en la pagina privada del Profesor
-		PO_View.checkElement(driver, "text", "99999993D");
+//		// Vamos al formulario de logueo.
+//		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+//		// Rellenamos el formulario
+//		PO_LoginView.fillForm(driver, "99999993D", "123456");
+//		// COmprobamos que entramos en la pagina privada del Profesor
+//		PO_View.checkElement(driver, "text", "99999993D");
 		// Pinchamos en la opción de menu de Notas: //li[contains(@id, 'marks-menu')]/a
 		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id,'marks-menu')]/a");
 		elementos.get(0).click();
